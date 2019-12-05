@@ -1,5 +1,5 @@
-from room import Room
 from player import Player
+from room import Room
 
 # Declare all the rooms
 
@@ -38,29 +38,26 @@ room['treasure'].s_to = room['narrow']
 # Main
 #
 
-# Make a new player object that is currently in the 'outside' room.
-player_name = input('Welcome, adventurer!  What is your name?\n')
-player = Player(player_name, 'outside')
+# Greeting:
+player_name = input('\nWelcome, adventurer!  What is your name?\n')
 
-print(f'\n{player.name} is standing {player.current_room} ')
+# Start position:
+player = Player(player_name, room['outside'])
 
-cmds = input('\nType "c" to continue. \nType "q" to quit the game.\n')
+print(f'\nYou find yourself next to an {player.current_room.name}\n{player.current_room.description}')
 
-# Write a loop that:
+valid_dir = ['n', 's', 'e', 'w']
+
+cmds = input('\nChoose a direction to move:\n   "n" - North\n   "s" - South\n   "e" - East\n   "w" - West\n Type "q" to quit the game.\n')
+
 while not cmds == 'q':
 
-    # * Prints the current room name
-    if cmds == 'c':
-        print(room[player.current_room].name)
-# * Prints the current description (the textwrap module might be useful here).
-# * Waits for user input and decides what to do.
-#
-# If the user enters a cardinal direction, attempt to move to the room there.
-# Print an error message if the movement isn't allowed.
-#
-# If the user enters "q", quit the game.
+    if valid_dir.__contains__(cmds):
+        player.move(cmds)
 
     else:
-        print("Invalid selection. Please try again.")
+        print("\nI don't know what that means. Please use one of the listed commands.\n")
 
-    cmds = input('\nType "c" to continue. \nType "q" to quit the game.\n')
+    cmds = input('\nChoose a direction to move:\n   "n" - North\n   "s" - South\n   "e" - East\n   "w" - West\n Type "q" to quit the game.\n')
+
+print(f"Goodbye, {player.name}. Thanks for playing!")
