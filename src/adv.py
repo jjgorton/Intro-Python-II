@@ -1,5 +1,6 @@
 from player import Player
 from room import Room
+from item import Item
 
 # Declare all the rooms
 
@@ -34,6 +35,21 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
+
+# Declare all the Items
+
+item = {
+    'torch': Item("Torch", """Having a long handle, this elaborately decorated torch is already lit"""),
+
+    'watch': Item("Pocket Watch", """Ticking away the seconds, the gold pocket watch has a long thin chain attached to it""")
+}
+
+
+# Assigning each Item's starting position
+
+room['foyer'].add_item(item['torch'])
+room['overlook'].add_item(item['watch'])
+
 #
 # Main
 #
@@ -44,7 +60,8 @@ player_name = input('\nWelcome, adventurer!  What is your name?\n')
 # Start position:
 player = Player(player_name, room['outside'])
 
-print(f'\nYou find yourself next to an {player.current_room.name}\n{player.current_room.description}')
+print(
+    f'\nYou find yourself next to an {player.current_room.name}\n{player.current_room.description}')
 
 valid_dir = ['n', 's', 'e', 'w']
 
@@ -52,12 +69,16 @@ cmds = input('\nChoose a direction to move:\n   "n" - North\n   "s" - South\n   
 
 while not cmds == 'q':
 
-    if valid_dir.__contains__(cmds):
+    if cmds in valid_dir:
         player.move(cmds)
+
+        for item in player.current_room.items:
+            print(item.name)
 
     else:
         print("\nI don't know what that means. Please use one of the listed commands.\n")
 
-    cmds = input('\nChoose a direction to move:\n   "n" - North\n   "s" - South\n   "e" - East\n   "w" - West\n Type "q" to quit the game.\n')
+    cmds = input(
+        '\nChoose a direction to move:\n   "n" - North\n   "s" - South\n   "e" - East\n   "w" - West\n Type "q" to quit the game.\n')
 
 print(f"Goodbye, {player.name}. Thanks for playing!")
