@@ -18,8 +18,17 @@ class Player:
         else:
             print("Ouch! You bumped into a wall.  Try another direction.")
 
-    def add_item(self, item):
-        self.inventory.append(item)
+    def add_item(self, item_name):
+        item = None
+        for item_obj in self.current_room.items:
+            if item_obj.name == item_name:
+                item = item_obj
+                self.inventory.append(item)
+                self.current_room.remove_item(item)
+                item.on_take()
+
+        if item == None:
+            print(f"{item_name} isn't here")
 
     def remove_item(self, item):
         self.inventory.remove(item)

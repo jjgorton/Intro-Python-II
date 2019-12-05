@@ -65,20 +65,33 @@ print(
 
 valid_dir = ['n', 's', 'e', 'w']
 
-cmds = input('\nChoose a direction to move:\n   "n" - North\n   "s" - South\n   "e" - East\n   "w" - West\n Type "q" to quit the game.\n')
+allowed_cmds = '\nAvailable Commands:\n   "n" - move North\n   "s" - move South\n   "e" - move East\n   "w" - move West\n\n  if you find a sword, try typing "get sword" or "take sword" to pick up the sword\n\n use "drop sword" to put it down.\n\n Type "i" or "inventory" to see what you have are carrying.\n\n  Type "q" to quit the game.\n'
 
-while not cmds == 'q':
+cmds = input('Type "?" to see Available Commands\n>>>').lower()
 
-    if cmds in valid_dir:
-        player.move(cmds)
+while not cmds[0] == 'q':
+
+    if cmds[0] in valid_dir:
+        player.move(cmds[0])
 
         for item in player.current_room.items:
             print(item.name)
 
+    elif cmds[0] == 'take' or cmds[0] == 'get':
+        player.add_item(cmds[1])
+
+    elif cmds[0] == 'drop':
+        for item in player.inventory:
+            if item.name == cmds[1]:
+                player.remove_item(item)
+                player.current_room.add_item(item)
+                item.on_drop()
+            else:
+                print(f"You don't have a {cmds[1]} ")
+
     else:
         print("\nI don't know what that means. Please use one of the listed commands.\n")
 
-    cmds = input(
-        '\nChoose a direction to move:\n   "n" - North\n   "s" - South\n   "e" - East\n   "w" - West\n Type "q" to quit the game.\n')
+    cmds = input().lower().split()
 
 print(f"Goodbye, {player.name}. Thanks for playing!")
