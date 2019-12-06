@@ -30,5 +30,14 @@ class Player:
         if item == None:
             print(f"{item_name} isn't here")
 
-    def remove_item(self, item):
-        self.inventory.remove(item)
+    def remove_item(self, item_name):
+        item = None
+        for item_obj in self.inventory:
+            if item_obj.name == item_name:
+                item = item_obj
+                self.inventory.remove(item)
+                self.current_room.add_item(item)
+                item.on_drop
+
+        if item == None:
+            print(f"You don't have {item_name} ")

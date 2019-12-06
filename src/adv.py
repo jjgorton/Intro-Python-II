@@ -39,9 +39,9 @@ room['treasure'].s_to = room['narrow']
 # Declare all the Items
 
 item = {
-    'torch': Item("Torch", """Having a long handle, this elaborately decorated torch is already lit"""),
+    'torch': Item("torch", """Having a long handle, this elaborately decorated torch is already lit"""),
 
-    'watch': Item("Pocket Watch", """Ticking away the seconds, the gold pocket watch has a long thin chain attached to it""")
+    'watch': Item("watch", """Ticking away the seconds, the gold pocket watch has a long thin chain attached to it""")
 }
 
 
@@ -67,7 +67,7 @@ valid_dir = ['n', 's', 'e', 'w']
 
 allowed_cmds = '\nAvailable Commands:\n   "n" - move North\n   "s" - move South\n   "e" - move East\n   "w" - move West\n\n  if you find a sword, try typing "get sword" or "take sword" to pick up the sword\n\n use "drop sword" to put it down.\n\n Type "i" or "inventory" to see what you have are carrying.\n\n  Type "q" to quit the game.\n'
 
-cmds = input('Type "?" to see Available Commands\n>>>').lower()
+cmds = input('\nType "?" to see Available Commands\n>>>').lower()
 
 while not cmds[0] == 'q':
 
@@ -81,17 +81,19 @@ while not cmds[0] == 'q':
         player.add_item(cmds[1])
 
     elif cmds[0] == 'drop':
+        player.remove_item(cmds[1])
+
+    elif cmds[0] == 'i' or cmds[0] == 'inventory':
+        print(f'You are currently holding:\n')
         for item in player.inventory:
-            if item.name == cmds[1]:
-                player.remove_item(item)
-                player.current_room.add_item(item)
-                item.on_drop()
-            else:
-                print(f"You don't have a {cmds[1]} ")
+            print(f'  - {item}')
+
+    elif cmds[0] == '?':
+        print(allowed_cmds)
 
     else:
-        print("\nI don't know what that means. Please use one of the listed commands.\n")
+        print("\nI don't know what that means. \nType '?' to see Available Commands\n")
 
-    cmds = input().lower().split()
+    cmds = input('>>>').lower().split()
 
 print(f"Goodbye, {player.name}. Thanks for playing!")
