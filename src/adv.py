@@ -1,4 +1,6 @@
+from player import Player
 from room import Room
+from item import Item
 
 # Declare all the rooms
 
@@ -33,19 +35,62 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
+
+# Declare all the Items
+
+item = {
+    'torch': Item("torch", """Having a long handle, this elaborately decorated torch is already lit"""),
+
+    'watch': Item("watch", """Ticking away the seconds, the gold pocket watch has a long thin chain attached to it""")
+}
+
+
+# Assigning each Item's starting position
+
+room['foyer'].add_item(item['torch'])
+room['overlook'].add_item(item['watch'])
+
 #
 # Main
 #
 
-# Make a new player object that is currently in the 'outside' room.
+# Greeting:
+player_name = input('\nWelcome, adventurer!  What is your name?\n')
 
-# Write a loop that:
-#
-# * Prints the current room name
-# * Prints the current description (the textwrap module might be useful here).
-# * Waits for user input and decides what to do.
-#
-# If the user enters a cardinal direction, attempt to move to the room there.
-# Print an error message if the movement isn't allowed.
-#
-# If the user enters "q", quit the game.
+# Start position:
+player = Player(player_name, room['outside'])
+
+print(
+    f'\nYou find yourself next to an {player.current_room.name}\n{player.current_room.description}')
+
+valid_dir = ['n', 's', 'e', 'w']
+
+allowed_cmds = '\nAvailable Commands:\n   "n" - move North\n   "s" - move South\n   "e" - move East\n   "w" - move West\n\n  if you find a sword, try typing "get sword" or "take sword" to pick up the sword\n\n use "drop sword" to put it down.\n\n Type "i" or "inventory" to see what you have are carrying.\n\n  Type "q" to quit the game.\n'
+
+cmds = input('\nType "?" to see Available Commands\n>>>').lower()
+
+while not cmds[0] == 'q':
+
+    if cmds[0] in valid_dir:
+        player.move(cmds[0])
+
+        player.current_room.print_items()
+
+    elif cmds[0] == 'take' or cmds[0] == 'get':
+        player.add_item(cmds[1])
+
+    elif cmds[0] == 'drop':
+        player.remove_item(cmds[1])
+
+    elif cmds[0] == 'i' or cmds[0] == 'inventory':
+        player.print_inv()
+
+    elif cmds[0] == '?':
+        print(allowed_cmds)
+
+    else:
+        print("\nI don't know what that means. \nType '?' to see Available Commands\n")
+
+    cmds = input('>>>').lower().split()
+
+print(f"Goodbye, {player.name}. Thanks for playing!")
