@@ -17,3 +17,11 @@ class Room:
 
     def remove_item(self, item):
         self.items.remove(item)
+
+    def print_items(self):
+        if len(self.items) > 0:
+            print(f'You can see:')
+            for item in self.items:
+                print(f'  - a {item.name}')
+        else:
+            print('The room is empty.')

@@ -16,7 +16,7 @@ class Player:
                 f'\nYou have moved to the {self.current_room.name}\n{self.current_room.description}\n')
 
         else:
-            print("Ouch! You bumped into a wall.  Try another direction.")
+            print("\nOuch! You bumped into a wall.  Try another direction.")
 
     def add_item(self, item_name):
         item = None
@@ -37,7 +37,15 @@ class Player:
                 item = item_obj
                 self.inventory.remove(item)
                 self.current_room.add_item(item)
-                item.on_drop
+                item.on_drop()
 
         if item == None:
-            print(f"You don't have {item_name} ")
+            print(f"You don't have the {item_name}")
+
+    def print_inv(self):
+        if len(self.inventory) > 0:
+            print(f'You are currently holding:\n')
+            for item in self.inventory:
+                print(f'  - the {item.name}')
+        else:
+            print("You aren't holding anything")

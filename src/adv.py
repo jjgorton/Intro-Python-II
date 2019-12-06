@@ -74,8 +74,7 @@ while not cmds[0] == 'q':
     if cmds[0] in valid_dir:
         player.move(cmds[0])
 
-        for item in player.current_room.items:
-            print(item.name)
+        player.current_room.print_items()
 
     elif cmds[0] == 'take' or cmds[0] == 'get':
         player.add_item(cmds[1])
@@ -84,9 +83,7 @@ while not cmds[0] == 'q':
         player.remove_item(cmds[1])
 
     elif cmds[0] == 'i' or cmds[0] == 'inventory':
-        print(f'You are currently holding:\n')
-        for item in player.inventory:
-            print(f'  - {item}')
+        player.print_inv()
 
     elif cmds[0] == '?':
         print(allowed_cmds)
